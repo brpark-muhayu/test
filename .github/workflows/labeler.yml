@@ -37,7 +37,7 @@ jobs:
             });
           }
 
-          console.log('label', label)
+          console.log('label', labels)
           console.log('github', github)
           if (labels.length > 0) {
             await github.issues.addLabels({

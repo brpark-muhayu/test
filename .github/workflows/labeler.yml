@@ -12,9 +12,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          console.log(github)
-          console.log(context)
-          const title = github.context.payload.pull_request.title.toLowerCase();
+          const title = context.payload.pull_request.title.toLowerCase();
           const labels = [];
 
           // 라벨 정의

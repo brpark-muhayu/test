@@ -37,6 +37,8 @@ jobs:
             });
           }
 
+          console.log('label', label)
+          console.log('github', github)
           if (labels.length > 0) {
             await github.issues.addLabels({
               issue_number: github.context.payload.pull_request.number,

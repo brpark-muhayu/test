@@ -1,0 +1,47 @@
+name: "Pull Request Labeler"
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, closed]
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Label PR based on title
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const title = github.context.payload.pull_request.title.toLowerCase();
+          const labels = [];
+
+          // 라벨 정의
+          const labelDefinitions = {
+            "feat": ["^feature", "feature", "^feat", "feat"],
+            "bug": ["^bug", "bug"],
+            "fix": ["^fix", "fix"],
+            "chore": ["^chore", "chore"],
+            "docs": ["^docs", "docs"],
+            "style": ["^style", "style"],
+            "refactor": ["^refactor", "refactor", "^refactoring", "refactoring"],
+            "test": ["^test", "test"]
+          };
+
+          // 풀 리퀘스트 제목을 검사하여 라벨 지정
+          for (const [label, patterns] of Object.entries(labelDefinitions)) {
+            patterns.forEach(pattern => {
+              const regex = new RegExp(pattern, 'i');
+              if (regex.test(title)) {
+                labels.push(label);
+              }
+            });
+          }
+
+          if (labels.length > 0) {
+            await github.issues.addLabels({
+              issue_number: github.context.payload.pull_request.number,
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              labels: labels
+            });
+          }

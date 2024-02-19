@@ -5,7 +5,7 @@ on:
 
 permissions:
   issues: write
-  
+
 jobs:
   labeler:
     runs-on: ubuntu-latest
@@ -40,8 +40,6 @@ jobs:
             });
           }
 
-          console.log('label', labels)
-          console.log('github', github)
           if (labels.length > 0) {
             await github.rest.issues.addLabels({
             issue_number: context.payload.pull_request.number,

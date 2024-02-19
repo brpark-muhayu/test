@@ -40,10 +40,10 @@ jobs:
           console.log('label', labels)
           console.log('github', github)
           if (labels.length > 0) {
-            await github.issues.addLabels({
-              pr_number:github.context.payload.pull_request.number,
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              labels: labels
+            await github.rest.issues.addLabels({
+            issue_number: context.payload.pull_request.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: labels
             });
           }
